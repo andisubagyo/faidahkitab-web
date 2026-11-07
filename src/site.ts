@@ -10,9 +10,9 @@ export const slugKategori = (k: string) => k.toLowerCase();
 export const formatTanggal = (d: Date) =>
   d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 
-// Artikel tampil jika bukan draf dan tanggalnya sudah tiba (zona waktu WIB, UTC+7).
-// Contoh: tanggal 2026-11-09 mulai tampil 9 Nov 2026 pukul 00.00 WIB,
-// setelah situs dibangun ulang (otomatis setiap hari lewat GitHub Actions).
-const WIB_MS = 7 * 60 * 60 * 1000;
+// Artikel tampil jika bukan draf dan sudah lewat pukul 19.00 WIB pada tanggalnya.
+// Contoh: tanggal 2026-11-09 mulai tampil 9 Nov 2026 pukul 19.00 WIB
+// (= 12.00 UTC), setelah situs dibangun ulang otomatis lewat GitHub Actions.
+const JAM_TERBIT_UTC_MS = 12 * 60 * 60 * 1000; // 19.00 WIB
 export const sudahTerbit = (data: { draft: boolean; tanggal: Date }) =>
-  !data.draft && data.tanggal.getTime() <= Date.now() + WIB_MS;
+  !data.draft && data.tanggal.getTime() + JAM_TERBIT_UTC_MS <= Date.now();

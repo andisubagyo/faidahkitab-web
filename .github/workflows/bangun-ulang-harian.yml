@@ -1,11 +1,11 @@
-# Membangun ulang situs setiap hari pukul 00.05 WIB (17.05 UTC),
+# Membangun ulang situs setiap hari pukul 19.00 WIB (12.00 UTC),
 # supaya artikel yang tanggalnya sudah tiba otomatis tampil.
 # Butuh secret CF_DEPLOY_HOOK (Deploy Hook dari Cloudflare Pages).
 name: Bangun ulang harian
 
 on:
   schedule:
-    - cron: '5 17 * * *'
+    - cron: '0 12 * * *'
   workflow_dispatch: {}
 
 jobs:
