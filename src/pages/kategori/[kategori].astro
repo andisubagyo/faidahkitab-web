@@ -36,7 +36,7 @@ const artikel = (
         <div class="daftar">
           {artikel.map((a) => (
             <a class="kartu" href={`/${a.id}/`}>
-              <img class="kartu-gambar" src={`/thumbnail/${a.id}.png`} alt="" width="1200" height="630" loading="lazy" decoding="async" />
+              <span class="kartu-bingkai"><img class="kartu-gambar" src={`/thumbnail/${a.id}.png`} alt="" width="1200" height="630" loading="lazy" decoding="async" /></span>
               <span class="kategori">{a.data.kategori}</span>
               <h3>{a.data.judul}</h3>
               <p>{a.data.deskripsi}</p>

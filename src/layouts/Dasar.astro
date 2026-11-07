@@ -63,8 +63,12 @@ const path = Astro.url.pathname;
           })}
           <a href="/tentang/" aria-current={path === '/tentang/' ? 'page' : undefined}>Tentang</a>
         </nav>
+        <a class="tombol tombol-emas tombol-kecil kepala-cta" href={SITE.telegram}>Gabung Telegram</a>
       </div>
       <slot name="hero" />
+      <svg class="gelombang" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 48c160 26 320 32 480 18S800 14 960 12s320 22 480 40v28H0z" fill="currentColor"/>
+      </svg>
     </header>
     <main id="isi">
       <slot />

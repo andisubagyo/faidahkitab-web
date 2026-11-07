@@ -6,60 +6,137 @@ import { SITE, slugKategori, formatTanggal, sudahTerbit, waktuBaca } from '../si
 const artikel = (await getCollection('artikel', ({ data }) => sudahTerbit(data))).sort(
   (a, b) => b.data.tanggal.valueOf() - a.data.tanggal.valueOf(),
 );
-const [terbaru, ...lainnya] = artikel;
+const terbaru = artikel[0];
+const jumlah = (k: string) => artikel.filter((a) => a.data.kategori === k).length;
+
+const rubrik = [
+  {
+    nama: 'Tauhid',
+    teks: 'Mengenal Allah, Rasul-Nya, dan agama Islam dari Syarh Tsalatsah al-Ushul dan kitab akidah lainnya.',
+    ikon: 'M12 3l2.6 3.8 4.5.7-1.6 4.3 1.6 4.4-4.5.7L12 21l-2.6-4.1-4.5-.7 1.6-4.4-1.6-4.3 4.5-.7z',
+  },
+  {
+    nama: 'Akhlak',
+    teks: 'Akhlak dan adab Rasulullah ﷺ dari Mukhtashar asy-Syama\'il al-Muhammadiyyah.',
+    ikon: 'M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z',
+  },
+  {
+    nama: 'Manhaj',
+    teks: 'Cara berdakwah di atas jalan para nabi, dari Manhaj al-Anbiya fi ad-Da\'wah ila Allah.',
+    ikon: 'M4 19V5h11l5 5v9H4zm11-14v5h5M8 13h8M8 16h5',
+  },
+];
+
+const cara = [
+  { judul: 'Rujukan halaman', teks: 'Setiap nukilan disertai judul kitab dan halamannya.', ikon: 'M5 4h10l4 4v12H5zM15 4v4h4M8 12h8M8 15h6' },
+  { judul: 'Takhrij hadits', teks: 'Hadits disertai periwayat, nomor, dan hukumnya.', ikon: 'M9 12l2 2 4-4M12 3l7 3v5c0 4.5-3 8.3-7 9.5-4-1.2-7-5-7-9.5V6z' },
+  { judul: 'Terjemah Kemenag', teks: 'Terjemah ayat mengikuti Kemenag RI edisi 2019.', ikon: 'M4 6h7a3 3 0 0 1 3 3v11a2 2 0 0 0-2-2H4zM20 6h-6v14a2 2 0 0 1 2-2h4z' },
+  { judul: 'Diperiksa', teks: 'Setiap artikel diperiksa sebelum diterbitkan.', ikon: 'M20 6L9 17l-5-5' },
+];
 ---
-<Dasar title={SITE.nama} description={SITE.tagline}>
+<Dasar title={SITE.nama} description={SITE.tagline} gambar={terbaru ? `/thumbnail/${terbaru.id}.png` : undefined}>
   <section class="hero" slot="hero">
-    <div class="wadah-lebar">
-      <h1>Faedah dari kitab para ulama</h1>
-      <p>Penjelasan ringan dan ilmiah dari kitab-kitab para ulama, lengkap dengan rujukan halaman dan takhrij hadits. Artikel baru terbit setiap Senin, Rabu, dan Jumat pukul 19.00 WIB.</p>
+    <div class="sinar" aria-hidden="true"></div>
+    <div class="wadah-lebar hero-isi">
+      <span class="lencana">Terbit setiap Senin, Rabu, dan Jumat pukul 19.00 WIB</span>
+      <h1>Faedah dari kitab para ulama, mudah dipahami</h1>
+      <p>Penjelasan ringan dan ilmiah dari kitab-kitab para ulama, lengkap dengan rujukan halaman, takhrij hadits, dan terjemah ayat.</p>
       <div class="hero-aksi">
-        {terbaru && <a class="tombol tombol-emas" href={`/${terbaru.id}/`}>Baca artikel terbaru</a>}
-        <a class="tombol tombol-terang" href={SITE.telegram}>Faedah harian di Telegram</a>
+        {
+          terbaru && (
+            <a class="tombol tombol-panah" href={`/${terbaru.id}/`}>
+              Baca artikel terbaru
+              <span class="panah" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </a>
+          )
+        }
+      </div>
+    </div>
+
+    <div class="wadah-lebar panggung" aria-hidden="true">
+      <div class="kaca kaca-kiri">
+        <p class="kaca-judul">Rubrik</p>
+        <ul>
+          {rubrik.map((r) => <li><span>{r.nama}</span><strong>{jumlah(r.nama)} artikel</strong></li>)}
+        </ul>
+      </div>
+
+      <div class="kaca kaca-tengah">
+        <p class="kaca-lencana">Faedah pilihan</p>
+        <p class="kaca-arab" lang="ar">العِلْمُ قَبْلَ الْقَوْلِ وَالْعَمَلِ</p>
+        <p class="kaca-terjemah">Ilmu sebelum ucapan dan amal</p>
+        <p class="kaca-sumber">Shahih al-Bukhari, Kitab al-'Ilm</p>
+        {terbaru && <img src={`/thumbnail/${terbaru.id}.png`} alt="" width="1200" height="630" />}
+      </div>
+
+      <div class="kaca kaca-kanan">
+        <p class="kaca-judul">Artikel terbaru</p>
+        {terbaru && <p class="kaca-artikel">{terbaru.data.judulSeo}</p>}
+        {terbaru && <p class="kaca-kecil">{formatTanggal(terbaru.data.tanggal)}</p>}
+        <p class="kaca-kecil">Diperiksa oleh Abu Hanifah</p>
       </div>
     </div>
   </section>
 
+  <section class="bagian wadah-lebar" aria-labelledby="judul-rubrik">
+    <div class="bagian-kepala">
+      <h2 id="judul-rubrik">Pilih rubrik</h2>
+      <p>Tiga rubrik, tiga kitab utama. Mulai dari yang paling Anda butuhkan.</p>
+    </div>
+    <div class="rubrik">
+      {
+        rubrik.map((r, i) => (
+          <a class:list={['rubrik-kartu', { sorot: i === 0 }]} href={`/kategori/${slugKategori(r.nama)}/`}>
+            <span class="rubrik-ikon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={r.ikon} fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg></span>
+            <h3>{r.nama}</h3>
+            <p>{r.teks}</p>
+            <span class="rubrik-tautan">Lihat {jumlah(r.nama)} artikel</span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
   <section class="bagian wadah-lebar" aria-labelledby="judul-terbaru">
-    <h2 class="bagian-judul" id="judul-terbaru">Artikel terbaru</h2>
-    <nav class="pilihan" aria-label="Pilih kategori">
-      {SITE.kategori.map((k) => <a href={`/kategori/${slugKategori(k)}/`}>{k}</a>)}
-    </nav>
-
-    {
-      terbaru && (
-        <a class="unggulan" href={`/${terbaru.id}/`}>
-          <img class="unggulan-gambar" src={`/thumbnail/${terbaru.id}.png`} alt="" width="1200" height="630" />
-          <div class="unggulan-teks">
-            <span class="kategori">{terbaru.data.kategori}</span>
-            <h3>{terbaru.data.judul}</h3>
-            <p>{terbaru.data.deskripsi}</p>
+    <div class="bagian-kepala">
+      <h2 id="judul-terbaru">Artikel terbaru</h2>
+      <p>Artikel baru terbit pukul 19.00 WIB.</p>
+    </div>
+    <div class="daftar">
+      {
+        artikel.map((a) => (
+          <a class="kartu" href={`/${a.id}/`}>
+            <span class="kartu-bingkai"><img class="kartu-gambar" src={`/thumbnail/${a.id}.png`} alt="" width="1200" height="630" loading="lazy" decoding="async" /></span>
+            <span class="kategori">{a.data.kategori}</span>
+            <h3>{a.data.judul}</h3>
+            <p>{a.data.deskripsi}</p>
             <div class="info">
-              <span>{formatTanggal(terbaru.data.tanggal)}</span>
-              <span>{waktuBaca(terbaru.body ?? '')} menit baca</span>
+              <span>{formatTanggal(a.data.tanggal)}</span>
+              <span>{waktuBaca(a.body ?? '')} menit baca</span>
             </div>
-          </div>
-        </a>
-      )
-    }
+          </a>
+        ))
+      }
+    </div>
+  </section>
 
-    {
-      lainnya.length > 0 && (
-        <div class="daftar">
-          {lainnya.map((a) => (
-            <a class="kartu" href={`/${a.id}/`}>
-              <img class="kartu-gambar" src={`/thumbnail/${a.id}.png`} alt="" width="1200" height="630" loading="lazy" decoding="async" />
-              <span class="kategori">{a.data.kategori}</span>
-              <h3>{a.data.judul}</h3>
-              <p>{a.data.deskripsi}</p>
-              <div class="info">
-                <span>{formatTanggal(a.data.tanggal)}</span>
-                <span>{waktuBaca(a.body ?? '')} menit baca</span>
-              </div>
-            </a>
-          ))}
-        </div>
-      )
-    }
+  <section class="bagian wadah-lebar" aria-labelledby="judul-cara">
+    <div class="cara">
+      <div class="bagian-kepala">
+        <h2 id="judul-cara">Cara kami menulis</h2>
+        <p>Ringan dibaca, tetapi setiap kalimat bisa dicek ke sumbernya.</p>
+      </div>
+      <ul class="cara-daftar">
+        {
+          cara.map((c) => (
+            <li>
+              <span class="cara-ikon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={c.ikon} fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg></span>
+              <strong>{c.judul}</strong>
+              <span>{c.teks}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
   </section>
 </Dasar>
