@@ -6,7 +6,7 @@ kategori: Tauhid
 tag: ["Ushul Tsalatsah", "Ibnu 'Utsaimin", "Ilmu", "Dakwah", "Sabar"]
 tanggal: 2026-11-07
 kitab: "Syarh Tsalatsah al-Ushul, Syaikh Muhammad bin Shalih al-'Utsaimin"
-pemeriksa: "Ustadz Abu Hanifah"
+pemeriksa: "Abu Hanifah"
 draft: false
 faq:
   - tanya: "Apa saja empat perkara yang wajib dipelajari setiap muslim?"
