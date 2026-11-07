@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import Dasar from '../layouts/Dasar.astro';
+import { SITE, slugKategori, formatTanggal } from '../site';
+
+const artikel = (await getCollection('artikel', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.tanggal.valueOf() - a.data.tanggal.valueOf(),
+);
+---
+<Dasar title={SITE.nama} description={SITE.tagline}>
+  <h1>{SITE.nama}</h1>
+  <p class="meta">{SITE.tagline}.</p>
+  {
+    artikel.map((a) => (
+      <div class="kartu">
+        <a class="label" href={`/kategori/${slugKategori(a.data.kategori)}/`}>{a.data.kategori}</a>
+        <h2><a href={`/${a.id}/`}>{a.data.judul}</a></h2>
+        <p>{a.data.deskripsi}</p>
+        <p class="meta" style="margin:0">{formatTanggal(a.data.tanggal)}</p>
+      </div>
+    ))
+  }
+</Dasar>

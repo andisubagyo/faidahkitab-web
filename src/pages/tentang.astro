@@ -1,0 +1,30 @@
+---
+import Dasar from '../layouts/Dasar.astro';
+import { SITE } from '../site';
+---
+<Dasar title="Tentang" description={`Tentang ${SITE.nama}: sumber, cara kerja, dan pemeriksaan artikel.`}>
+  <h1>Tentang {SITE.nama}</h1>
+  <p>
+    {SITE.nama} menyajikan faedah dari kitab-kitab para ulama dalam bahasa Indonesia yang ringan
+    dan mudah dipahami, tanpa meninggalkan ketelitian ilmiah.
+  </p>
+  <h2>Sumber</h2>
+  <p>
+    Setiap artikel diambil dari kitab tertentu, seperti <em>Syarh Tsalatsah al-Ushul</em> karya
+    Syaikh Muhammad bin Shalih al-'Utsaimin <em>rahimahullah</em>, <em>Mukhtashar asy-Syama'il
+    al-Muhammadiyyah</em> tahqiq Syaikh al-Albani <em>rahimahullah</em>, dan <em>Manhaj al-Anbiya fi
+    ad-Da'wah ila Allah</em> karya Syaikh Rabi' bin Hadi al-Madkhali <em>hafizhahullah</em>.
+  </p>
+  <h2>Cara kami menulis</h2>
+  <ul>
+    <li>Perkataan ulama dinukil dari kitabnya dan diberi rujukan halaman.</li>
+    <li>Hadits disertai takhrij dan hukumnya.</li>
+    <li>Terjemah ayat mengikuti terjemah Kementerian Agama RI edisi 2019.</li>
+    <li>Setiap artikel diperiksa oleh ustadz sebelum diterbitkan.</li>
+  </ul>
+  <h2>Kontak</h2>
+  <p>
+    Masukan dan koreksi dapat disampaikan melalui channel Telegram
+    <a href={SITE.telegram}>t.me/faidahkitab</a>.
+  </p>
+</Dasar>

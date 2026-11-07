@@ -1,0 +1,60 @@
+---
+import { SITE, slugKategori } from '../site';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  jenis?: 'website' | 'article';
+  jsonLd?: object[];
+}
+const { title, description, jenis = 'website', jsonLd = [] } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const judulPenuh = title === SITE.nama ? title : `${title} | ${SITE.nama}`;
+---
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{judulPenuh}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:type" content={jenis} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={SITE.nama} />
+    <meta property="og:locale" content="id_ID" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap"
+      rel="stylesheet"
+    />
+    {jsonLd.map((d) => <script type="application/ld+json" set:html={JSON.stringify(d)} />)}
+  </head>
+  <body>
+    <header class="kepala">
+      <div class="wadah kepala-isi">
+        <a href="/" class="logo">{SITE.nama}</a>
+        <nav aria-label="Kategori">
+          {SITE.kategori.map((k) => <a href={`/kategori/${slugKategori(k)}/`}>{k}</a>)}
+          <a href="/tentang/">Tentang</a>
+        </nav>
+      </div>
+    </header>
+    <main class="wadah">
+      <slot />
+    </main>
+    <footer class="kaki">
+      <div class="wadah">
+        <p>
+          Ikuti faedah harian di Telegram: <a href={SITE.telegram}>t.me/faidahkitab</a>
+        </p>
+        <p class="kecil">© {new Date().getFullYear()} {SITE.nama}. Silakan disebarkan dengan menyertakan sumber.</p>
+      </div>
+    </footer>
+  </body>
+</html>

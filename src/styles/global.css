@@ -1,0 +1,91 @@
+:root {
+  --kertas: #fbf8f2;
+  --tinta: #1f2a24;
+  --redup: #5d665f;
+  --aksen: #1d5c45;
+  --garis: #e4ddcf;
+  --sorot: #f2ecdf;
+  --lebar: 44rem;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--kertas);
+  color: var(--tinta);
+  font-family: 'Literata', Georgia, serif;
+  font-size: 1.125rem;
+  line-height: 1.75;
+}
+
+a { color: var(--aksen); text-underline-offset: 3px; }
+
+.wadah { max-width: var(--lebar); margin: 0 auto; padding: 0 1.25rem; }
+
+/* Kepala & kaki */
+.kepala { border-bottom: 1px solid var(--garis); background: #fff; }
+.kepala-isi {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: .5rem 1.5rem; padding-top: .9rem; padding-bottom: .9rem;
+}
+.logo { font-weight: 600; font-size: 1.25rem; color: var(--tinta); text-decoration: none; }
+.kepala nav { display: flex; flex-wrap: wrap; gap: 1.1rem; font-size: 1rem; }
+.kepala nav a { color: var(--redup); text-decoration: none; }
+.kepala nav a:hover { color: var(--aksen); }
+
+.kaki { margin-top: 4rem; border-top: 1px solid var(--garis); padding: 1.5rem 0 2.5rem; color: var(--redup); font-size: 1rem; }
+.kecil { font-size: .875rem; }
+
+/* Tipografi artikel */
+h1, h2, h3, h4 { line-height: 1.3; font-weight: 600; }
+h1 { font-size: 2rem; margin: 2.5rem 0 .5rem; }
+h2 { font-size: 1.45rem; margin: 2.5rem 0 .75rem; }
+h3 { font-size: 1.2rem; margin: 2rem 0 .5rem; }
+
+.meta { color: var(--redup); font-size: .95rem; margin-bottom: 2rem; }
+.meta a { color: var(--redup); }
+
+/* Teks Arab */
+.arab {
+  font-family: 'Amiri', 'Noto Naskh Arabic', serif;
+  font-size: 1.6rem;
+  line-height: 2.2;
+  direction: rtl;
+  text-align: right;
+  background: var(--sorot);
+  border-right: 4px solid var(--aksen);
+  padding: .75rem 1.25rem;
+  margin: 1.5rem 0 .75rem;
+  border-radius: 4px;
+}
+.terjemah { color: var(--tinta); font-style: italic; }
+
+/* Kotak pemeriksa */
+.pemeriksa {
+  border: 1px solid var(--garis); background: #fff; border-radius: 6px;
+  padding: 1rem 1.25rem; margin-top: 2.5rem; font-size: 1rem;
+}
+
+/* Catatan kaki (GFM) */
+.footnotes { margin-top: 3rem; border-top: 1px solid var(--garis); font-size: .95rem; color: var(--redup); }
+.footnotes h2 { font-size: 1.1rem; }
+sup a { text-decoration: none; font-weight: 600; }
+
+/* Daftar artikel */
+.kartu { padding: 1.25rem 0; border-bottom: 1px solid var(--garis); }
+.kartu h2 { margin: .25rem 0; font-size: 1.3rem; }
+.kartu h2 a { color: var(--tinta); text-decoration: none; }
+.kartu h2 a:hover { color: var(--aksen); }
+.kartu p { margin: .25rem 0; }
+.label { font-size: .85rem; color: var(--aksen); text-transform: uppercase; letter-spacing: .06em; }
+
+blockquote { margin: 1.5rem 0; padding-left: 1rem; border-left: 3px solid var(--garis); color: var(--redup); }
+
+@media (max-width: 600px) {
+  body { font-size: 1.0625rem; }
+  h1 { font-size: 1.65rem; }
+  .arab { font-size: 1.4rem; }
+}

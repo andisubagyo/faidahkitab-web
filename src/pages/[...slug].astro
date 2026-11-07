@@ -1,0 +1,66 @@
+---
+import { getCollection, render } from 'astro:content';
+import Dasar from '../layouts/Dasar.astro';
+import { SITE, slugKategori, formatTanggal } from '../site';
+
+export async function getStaticPaths() {
+  const semua = await getCollection('artikel', ({ data }) => !data.draft);
+  return semua.map((a) => ({ params: { slug: a.id }, props: { a } }));
+}
+
+const { a } = Astro.props;
+const { Content } = await render(a);
+const d = a.data;
+const url = new URL(`/${a.id}/`, Astro.site).href;
+
+const jsonLd: object[] = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: d.judul,
+    description: d.deskripsi,
+    datePublished: d.tanggal.toISOString(),
+    dateModified: (d.diperbarui ?? d.tanggal).toISOString(),
+    inLanguage: 'id',
+    author: { '@type': 'Organization', name: d.penulis },
+    publisher: { '@type': 'Organization', name: SITE.nama },
+    mainEntityOfPage: url,
+  },
+];
+if (d.faq.length) {
+  jsonLd.push({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: d.faq.map((f) => ({
+      '@type': 'Question',
+      name: f.tanya,
+      acceptedAnswer: { '@type': 'Answer', text: f.jawab },
+    })),
+  });
+}
+---
+<Dasar title={d.judulSeo} description={d.deskripsi} jenis="article" jsonLd={jsonLd}>
+  <article>
+    <h1>{d.judul}</h1>
+    <p class="meta">
+      <a href={`/kategori/${slugKategori(d.kategori)}/`}>{d.kategori}</a>{' · '}{formatTanggal(d.tanggal)}{' · '}Sumber: <em>{d.kitab}</em>
+    </p>
+    <Content />
+    {
+      d.faq.length > 0 && (
+        <section>
+          <h2>Tanya jawab</h2>
+          {d.faq.map((f) => (
+            <>
+              <h3>{f.tanya}</h3>
+              <p>{f.jawab}</p>
+            </>
+          ))}
+        </section>
+      )
+    }
+    <div class="pemeriksa">
+      Ditulis oleh: {d.penulis}{d.pemeriksa && <> · Diperiksa oleh: {d.pemeriksa}</>}
+    </div>
+  </article>
+</Dasar>
