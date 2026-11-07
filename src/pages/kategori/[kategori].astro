@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Dasar from '../../layouts/Dasar.astro';
-import { SITE, slugKategori, formatTanggal } from '../../site';
+import { SITE, slugKategori, formatTanggal, sudahTerbit } from '../../site';
 
 export function getStaticPaths() {
   return SITE.kategori.map((k) => ({ params: { kategori: slugKategori(k) }, props: { nama: k } }));
@@ -9,7 +9,7 @@ export function getStaticPaths() {
 
 const { nama } = Astro.props;
 const artikel = (
-  await getCollection('artikel', ({ data }) => !data.draft && data.kategori === nama)
+  await getCollection('artikel', ({ data }) => sudahTerbit(data) && data.kategori === nama)
 ).sort((a, b) => b.data.tanggal.valueOf() - a.data.tanggal.valueOf());
 ---
 <Dasar title={`Artikel ${nama}`} description={`Kumpulan artikel ${nama} dari kitab para ulama.`}>

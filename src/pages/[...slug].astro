@@ -1,10 +1,10 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Dasar from '../layouts/Dasar.astro';
-import { SITE, slugKategori, formatTanggal } from '../site';
+import { SITE, slugKategori, formatTanggal, sudahTerbit } from '../site';
 
 export async function getStaticPaths() {
-  const semua = await getCollection('artikel', ({ data }) => !data.draft);
+  const semua = await getCollection('artikel', ({ data }) => sudahTerbit(data));
   return semua.map((a) => ({ params: { slug: a.id }, props: { a } }));
 }
 

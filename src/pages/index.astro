@@ -1,9 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
 import Dasar from '../layouts/Dasar.astro';
-import { SITE, slugKategori, formatTanggal } from '../site';
+import { SITE, slugKategori, formatTanggal, sudahTerbit } from '../site';
 
-const artikel = (await getCollection('artikel', ({ data }) => !data.draft)).sort(
+const artikel = (await getCollection('artikel', ({ data }) => sudahTerbit(data))).sort(
   (a, b) => b.data.tanggal.valueOf() - a.data.tanggal.valueOf(),
 );
 ---

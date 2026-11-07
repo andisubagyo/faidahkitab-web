@@ -1,0 +1,22 @@
+# Membangun ulang situs setiap hari pukul 00.05 WIB (17.05 UTC),
+# supaya artikel yang tanggalnya sudah tiba otomatis tampil.
+# Butuh secret CF_DEPLOY_HOOK (Deploy Hook dari Cloudflare Pages).
+name: Bangun ulang harian
+
+on:
+  schedule:
+    - cron: '5 17 * * *'
+  workflow_dispatch: {}
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Panggil Cloudflare Deploy Hook
+        env:
+          HOOK: ${{ secrets.CF_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "Secret CF_DEPLOY_HOOK belum diisi." && exit 1
+          fi
+          curl -fsS -X POST "$HOOK"
