@@ -4,7 +4,7 @@ judulSeo: "Tiga Masalah yang Wajib Diketahui Setiap Muslim"
 deskripsi: "Allah menciptakan kita dan mengutus rasul, tidak ridha disekutukan, dan larangan loyal kepada penentang-Nya. Penjelasan Syaikh Ibnu 'Utsaimin."
 kategori: Tauhid
 tag: ["Ushul Tsalatsah", "Ibnu 'Utsaimin", "Tauhid", "Syirik", "Wala' dan Bara'"]
-tanggal: 2026-11-09
+tanggal: 2026-11-07
 kitab: "Syarh Tsalatsah al-Ushul, Syaikh Muhammad bin Shalih al-'Utsaimin"
 pemeriksa: "Abu Hanifah"
 draft: false
