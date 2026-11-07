@@ -11,6 +11,7 @@ interface Props {
 const { title, description, jenis = 'website', jsonLd = [] } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const judulPenuh = title === SITE.nama ? title : `${title} | ${SITE.nama}`;
+const path = Astro.url.pathname;
 ---
 <!doctype html>
 <html lang="id">
@@ -20,8 +21,10 @@ const judulPenuh = title === SITE.nama ? title : `${title} | ${SITE.nama}`;
     <title>{judulPenuh}</title>
     <meta name="description" content={description} />
     <meta name="google-site-verification" content="D4s_-AtWHAVQ256Y16L9A9IkpmujNRvreBesEuYd28c" />
+    <meta name="theme-color" content="#0E2A3B" />
     <link rel="canonical" href={canonical} />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta property="og:type" content={jenis} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -31,30 +34,48 @@ const judulPenuh = title === SITE.nama ? title : `${title} | ${SITE.nama}`;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap"
       rel="stylesheet"
     />
     {jsonLd.map((d) => <script type="application/ld+json" set:html={JSON.stringify(d)} />)}
   </head>
   <body>
+    <a class="lewati" href="#isi">Lewati ke isi</a>
     <header class="kepala">
-      <div class="wadah kepala-isi">
-        <a href="/" class="logo">{SITE.nama}</a>
+      <div class="wadah-lebar kepala-isi">
+        <a href="/" class="logo" aria-label={`${SITE.nama}, beranda`}>
+          <svg class="logo-ikon" viewBox="0 0 32 32" aria-hidden="true">
+            <path d="M16 2l4.1 5.9L27 9l-2.4 6.6L27 22.4l-6.9 1.1L16 30l-4.1-6.5L5 22.4l2.4-6.8L5 9l6.9-1.1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            <circle cx="16" cy="16" r="4.2" fill="currentColor"/>
+          </svg>
+          <span>{SITE.nama}</span>
+        </a>
         <nav aria-label="Kategori">
-          {SITE.kategori.map((k) => <a href={`/kategori/${slugKategori(k)}/`}>{k}</a>)}
-          <a href="/tentang/">Tentang</a>
+          {SITE.kategori.map((k) => {
+            const href = `/kategori/${slugKategori(k)}/`;
+            return <a href={href} aria-current={path === href ? 'page' : undefined}>{k}</a>;
+          })}
+          <a href="/tentang/" aria-current={path === '/tentang/' ? 'page' : undefined}>Tentang</a>
         </nav>
       </div>
+      <slot name="hero" />
     </header>
-    <main class="wadah">
+    <main id="isi">
       <slot />
     </main>
     <footer class="kaki">
-      <div class="wadah">
-        <p>
-          Ikuti faedah harian di Telegram: <a href={SITE.telegram}>t.me/faidahkitab</a>
-        </p>
-        <p class="kecil">© {new Date().getFullYear()} {SITE.nama}. Silakan disebarkan dengan menyertakan sumber.</p>
+      <div class="wadah-lebar kaki-isi">
+        <div>
+          <p class="kaki-nama">{SITE.nama}</p>
+          <p class="kaki-teks">{SITE.tagline}.</p>
+        </div>
+        <a class="tombol tombol-terang" href={SITE.telegram}>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.4 4.3 2.9 11.4c-1.3.5-1.2 1.2-.2 1.5l4.7 1.5 1.8 5.6c.2.6.4.8.9.8.4 0 .6-.2.9-.5l2.3-2.2 4.8 3.5c.9.5 1.5.2 1.7-.8l3.1-14.7c.3-1.3-.5-1.9-1.5-1.8zM8.9 14.2l9.6-6c.5-.3.9-.1.5.2l-8.2 7.4-.3 3.4z"/></svg>
+          Ikuti faedah harian di Telegram
+        </a>
+      </div>
+      <div class="wadah-lebar kaki-bawah">
+        <p>© {new Date().getFullYear()} {SITE.nama}. Silakan disebarkan dengan menyertakan sumber.</p>
       </div>
     </footer>
   </body>

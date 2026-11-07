@@ -16,3 +16,7 @@ export const formatTanggal = (d: Date) =>
 const JAM_TERBIT_UTC_MS = 12 * 60 * 60 * 1000; // 19.00 WIB
 export const sudahTerbit = (data: { draft: boolean; tanggal: Date }) =>
   !data.draft && data.tanggal.getTime() + JAM_TERBIT_UTC_MS <= Date.now();
+
+// Perkiraan waktu baca (sekitar 200 kata per menit).
+export const waktuBaca = (teks: string) =>
+  Math.max(1, Math.round(teks.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length / 200));

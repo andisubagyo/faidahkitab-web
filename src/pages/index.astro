@@ -1,23 +1,61 @@
 ---
 import { getCollection } from 'astro:content';
 import Dasar from '../layouts/Dasar.astro';
-import { SITE, slugKategori, formatTanggal, sudahTerbit } from '../site';
+import { SITE, slugKategori, formatTanggal, sudahTerbit, waktuBaca } from '../site';
 
 const artikel = (await getCollection('artikel', ({ data }) => sudahTerbit(data))).sort(
   (a, b) => b.data.tanggal.valueOf() - a.data.tanggal.valueOf(),
 );
+const [terbaru, ...lainnya] = artikel;
 ---
 <Dasar title={SITE.nama} description={SITE.tagline}>
-  <h1>{SITE.nama}</h1>
-  <p class="meta">{SITE.tagline}.</p>
-  {
-    artikel.map((a) => (
-      <div class="kartu">
-        <a class="label" href={`/kategori/${slugKategori(a.data.kategori)}/`}>{a.data.kategori}</a>
-        <h2><a href={`/${a.id}/`}>{a.data.judul}</a></h2>
-        <p>{a.data.deskripsi}</p>
-        <p class="meta" style="margin:0">{formatTanggal(a.data.tanggal)}</p>
+  <section class="hero" slot="hero">
+    <div class="wadah-lebar">
+      <h1>Faedah dari kitab para ulama</h1>
+      <p>Penjelasan ringan dan ilmiah dari kitab-kitab para ulama, lengkap dengan rujukan halaman dan takhrij hadits. Artikel baru terbit setiap Senin, Rabu, dan Jumat pukul 19.00 WIB.</p>
+      <div class="hero-aksi">
+        {terbaru && <a class="tombol tombol-emas" href={`/${terbaru.id}/`}>Baca artikel terbaru</a>}
+        <a class="tombol tombol-terang" href={SITE.telegram}>Faedah harian di Telegram</a>
       </div>
-    ))
-  }
+    </div>
+  </section>
+
+  <section class="bagian wadah-lebar" aria-labelledby="judul-terbaru">
+    <h2 class="bagian-judul" id="judul-terbaru">Artikel terbaru</h2>
+    <nav class="pilihan" aria-label="Pilih kategori">
+      {SITE.kategori.map((k) => <a href={`/kategori/${slugKategori(k)}/`}>{k}</a>)}
+    </nav>
+
+    {
+      terbaru && (
+        <a class="unggulan" href={`/${terbaru.id}/`}>
+          <span class="kategori">{terbaru.data.kategori}</span>
+          <h3>{terbaru.data.judul}</h3>
+          <p>{terbaru.data.deskripsi}</p>
+          <div class="info">
+            <span>{formatTanggal(terbaru.data.tanggal)}</span>
+            <span>{waktuBaca(terbaru.body ?? '')} menit baca</span>
+          </div>
+        </a>
+      )
+    }
+
+    {
+      lainnya.length > 0 && (
+        <div class="daftar">
+          {lainnya.map((a) => (
+            <a class="kartu" href={`/${a.id}/`}>
+              <span class="kategori">{a.data.kategori}</span>
+              <h3>{a.data.judul}</h3>
+              <p>{a.data.deskripsi}</p>
+              <div class="info">
+                <span>{formatTanggal(a.data.tanggal)}</span>
+                <span>{waktuBaca(a.body ?? '')} menit baca</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      )
+    }
+  </section>
 </Dasar>

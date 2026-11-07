@@ -1,27 +1,52 @@
 ---
 import { getCollection } from 'astro:content';
 import Dasar from '../../layouts/Dasar.astro';
-import { SITE, slugKategori, formatTanggal, sudahTerbit } from '../../site';
+import { SITE, slugKategori, formatTanggal, sudahTerbit, waktuBaca } from '../../site';
 
 export function getStaticPaths() {
   return SITE.kategori.map((k) => ({ params: { kategori: slugKategori(k) }, props: { nama: k } }));
 }
+
+const keterangan: Record<string, string> = {
+  Tauhid: 'Mengenal Allah, Rasul-Nya, dan agama Islam dari kitab-kitab akidah para ulama.',
+  Akhlak: 'Akhlak dan adab Rasulullah ﷺ dari kitab asy-Syama\'il dan kitab adab lainnya.',
+  Manhaj: 'Cara beragama dan berdakwah di atas jalan para nabi dan generasi salaf.',
+};
 
 const { nama } = Astro.props;
 const artikel = (
   await getCollection('artikel', ({ data }) => sudahTerbit(data) && data.kategori === nama)
 ).sort((a, b) => b.data.tanggal.valueOf() - a.data.tanggal.valueOf());
 ---
-<Dasar title={`Artikel ${nama}`} description={`Kumpulan artikel ${nama} dari kitab para ulama.`}>
-  <h1>{nama}</h1>
-  {artikel.length === 0 && <p class="meta">Artikel untuk kategori ini segera hadir, in syaa Allah.</p>}
-  {
-    artikel.map((a) => (
-      <div class="kartu">
-        <h2><a href={`/${a.id}/`}>{a.data.judul}</a></h2>
-        <p>{a.data.deskripsi}</p>
-        <p class="meta" style="margin:0">{formatTanggal(a.data.tanggal)}</p>
-      </div>
-    ))
-  }
+<Dasar title={`Artikel ${nama}`} description={keterangan[nama]}>
+  <section class="halaman-kepala" slot="hero">
+    <div class="wadah-lebar">
+      <h1>{nama}</h1>
+      <p>{keterangan[nama]}</p>
+    </div>
+  </section>
+
+  <section class="bagian wadah-lebar">
+    {
+      artikel.length === 0 ? (
+        <p class="kosong">
+          Artikel {nama} pertama sedang disiapkan. Sementara itu, baca <a href="/">artikel terbaru</a> atau ikuti faedah harian di <a href={SITE.telegram}>Telegram</a>.
+        </p>
+      ) : (
+        <div class="daftar">
+          {artikel.map((a) => (
+            <a class="kartu" href={`/${a.id}/`}>
+              <span class="kategori">{a.data.kategori}</span>
+              <h3>{a.data.judul}</h3>
+              <p>{a.data.deskripsi}</p>
+              <div class="info">
+                <span>{formatTanggal(a.data.tanggal)}</span>
+                <span>{waktuBaca(a.body ?? '')} menit baca</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      )
+    }
+  </section>
 </Dasar>

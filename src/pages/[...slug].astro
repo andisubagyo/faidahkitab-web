@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Dasar from '../layouts/Dasar.astro';
-import { SITE, slugKategori, formatTanggal, sudahTerbit } from '../site';
+import { SITE, slugKategori, formatTanggal, sudahTerbit, waktuBaca } from '../site';
 
 export async function getStaticPaths() {
   const semua = await getCollection('artikel', ({ data }) => sudahTerbit(data));
@@ -40,27 +40,46 @@ if (d.faq.length) {
 }
 ---
 <Dasar title={d.judulSeo} description={d.deskripsi} jenis="article" jsonLd={jsonLd}>
-  <article>
-    <h1>{d.judul}</h1>
-    <p class="meta">
-      <a href={`/kategori/${slugKategori(d.kategori)}/`}>{d.kategori}</a>{' · '}{formatTanggal(d.tanggal)}{' · '}Sumber: <em>{d.kitab}</em>
-    </p>
+  <section class="artikel-kepala" slot="hero">
+    <div class="wadah-baca">
+      <a class="kategori" href={`/kategori/${slugKategori(d.kategori)}/`}>{d.kategori}</a>
+      <h1>{d.judul}</h1>
+      <div class="info">
+        <span>{formatTanggal(d.tanggal)}</span>
+        <span>{waktuBaca(a.body ?? '')} menit baca</span>
+        <span>Sumber: <em>{d.kitab}</em></span>
+      </div>
+    </div>
+  </section>
+
+  <article class="lembar">
     <Content />
+
     {
       d.faq.length > 0 && (
-        <section>
-          <h2>Tanya jawab</h2>
+        <section class="tanya" aria-labelledby="judul-tanya">
+          <h2 id="judul-tanya">Tanya jawab</h2>
           {d.faq.map((f) => (
-            <>
-              <h3>{f.tanya}</h3>
+            <details>
+              <summary>{f.tanya}</summary>
               <p>{f.jawab}</p>
-            </>
+            </details>
           ))}
         </section>
       )
     }
+
     <div class="pemeriksa">
-      Ditulis oleh: {d.penulis}{d.pemeriksa && <> · Diperiksa oleh: {d.pemeriksa}</>}
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3zm-1.2 14.2-3.5-3.5 1.4-1.4 2.1 2.1 4.9-4.9 1.4 1.4-6.3 6.3z"/></svg>
+      <div>
+        Ditulis oleh <strong>{d.penulis}</strong>
+        {d.pemeriksa && <><br />Diperiksa oleh <strong>{d.pemeriksa}</strong></>}
+      </div>
     </div>
   </article>
+
+  <div class="ajak">
+    <p>Dapatkan faedah singkat setiap hari dari kitab para ulama.</p>
+    <a class="tombol tombol-emas" href={SITE.telegram}>Gabung channel Telegram</a>
+  </div>
 </Dasar>
