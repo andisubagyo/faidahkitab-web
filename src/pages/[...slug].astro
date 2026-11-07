@@ -12,6 +12,7 @@ const { a } = Astro.props;
 const { Content } = await render(a);
 const d = a.data;
 const url = new URL(`/${a.id}/`, Astro.site).href;
+const gambar = `/thumbnail/${a.id}.png`;
 
 const jsonLd: object[] = [
   {
@@ -25,6 +26,7 @@ const jsonLd: object[] = [
     author: { '@type': 'Organization', name: d.penulis },
     publisher: { '@type': 'Organization', name: SITE.nama },
     mainEntityOfPage: url,
+    image: new URL(gambar, Astro.site).href,
   },
 ];
 if (d.faq.length) {
@@ -39,7 +41,7 @@ if (d.faq.length) {
   });
 }
 ---
-<Dasar title={d.judulSeo} description={d.deskripsi} jenis="article" jsonLd={jsonLd}>
+<Dasar title={d.judulSeo} description={d.deskripsi} jenis="article" jsonLd={jsonLd} gambar={gambar}>
   <section class="artikel-kepala" slot="hero">
     <div class="wadah-baca">
       <a class="kategori" href={`/kategori/${slugKategori(d.kategori)}/`}>{d.kategori}</a>

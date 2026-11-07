@@ -29,12 +29,15 @@ const [terbaru, ...lainnya] = artikel;
     {
       terbaru && (
         <a class="unggulan" href={`/${terbaru.id}/`}>
-          <span class="kategori">{terbaru.data.kategori}</span>
-          <h3>{terbaru.data.judul}</h3>
-          <p>{terbaru.data.deskripsi}</p>
-          <div class="info">
-            <span>{formatTanggal(terbaru.data.tanggal)}</span>
-            <span>{waktuBaca(terbaru.body ?? '')} menit baca</span>
+          <img class="unggulan-gambar" src={`/thumbnail/${terbaru.id}.png`} alt="" width="1200" height="630" />
+          <div class="unggulan-teks">
+            <span class="kategori">{terbaru.data.kategori}</span>
+            <h3>{terbaru.data.judul}</h3>
+            <p>{terbaru.data.deskripsi}</p>
+            <div class="info">
+              <span>{formatTanggal(terbaru.data.tanggal)}</span>
+              <span>{waktuBaca(terbaru.body ?? '')} menit baca</span>
+            </div>
           </div>
         </a>
       )
@@ -45,6 +48,7 @@ const [terbaru, ...lainnya] = artikel;
         <div class="daftar">
           {lainnya.map((a) => (
             <a class="kartu" href={`/${a.id}/`}>
+              <img class="kartu-gambar" src={`/thumbnail/${a.id}.png`} alt="" width="1200" height="630" loading="lazy" decoding="async" />
               <span class="kategori">{a.data.kategori}</span>
               <h3>{a.data.judul}</h3>
               <p>{a.data.deskripsi}</p>
