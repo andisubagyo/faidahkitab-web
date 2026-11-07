@@ -18,7 +18,7 @@
 
   --sans: 'Plus Jakarta Sans', system-ui, sans-serif;
   --serif: 'Source Serif 4', Georgia, serif;
-  --arab: 'Amiri', 'Noto Naskh Arabic', serif;
+  --arab: 'Noto Naskh Arabic', 'Amiri', serif;
 
   --baca: 42rem;    /* lebar kolom baca (~70 karakter) */
   --lebar: 70rem;
@@ -151,7 +151,7 @@ h1, h2, h3, h4 { font-family: var(--sans); color: var(--malam); line-height: 1.2
 .lembar blockquote { margin: 1.5rem 0; padding-left: 1rem; border-left: 3px solid var(--garis); color: var(--redup); }
 
 .arab {
-  font-family: var(--arab); font-size: 1.65rem; line-height: 2.25;
+  font-family: var(--arab); font-size: 1.6rem; font-weight: 500; line-height: 2.3;
   direction: rtl; text-align: right; color: var(--malam);
   background: linear-gradient(270deg, var(--sorot) 0%, #f8fbfa 100%);
   border-right: 4px solid var(--emas);
@@ -204,7 +204,7 @@ sup a { text-decoration: none; font-family: var(--sans); font-weight: 700; font-
 @media (max-width: 640px) {
   body { font-size: 1.0625rem; }
   .lembar { border-radius: 16px; padding: 1.75rem 1.25rem 2rem; margin-left: .75rem; margin-right: .75rem; }
-  .arab { font-size: 1.45rem; padding: .9rem 1.1rem; }
+  .arab { font-size: 1.4rem; padding: .9rem 1.1rem; }
   .unggulan { padding: 1.6rem; border-radius: 16px; }
   .ajak { margin-left: .75rem; margin-right: .75rem; padding: 1.5rem; }
   .hero { padding: 2.5rem 0 3.5rem; }
